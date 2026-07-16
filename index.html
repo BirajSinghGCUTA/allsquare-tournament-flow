@@ -446,10 +446,9 @@ shots.scoring = phoneWrap(
   R(10, 384, 180, 28, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
   O(24, 398, 8, 'rgba(242,191,26,0.35)') +
   T(24, 401, '$', { size: 9, w: 800, fill: C.goldDeep, anchor: 'middle' }) +
-  T(38, 395, 'TEAM PLEDGE', { size: 5.5, w: 800, ls: 1, fill: C.ink60 }) +
-  T(38, 406, '$60 for the cause', { size: 7.5, w: 800 }) +
-  O(152, 398, 9, C.sand2) + T(152, 401.5, '−', { size: 9, w: 700, anchor: 'middle' }) +
-  O(176, 398, 9, C.sand2) + T(176, 401.5, '+', { size: 9, w: 700, anchor: 'middle' }));
+  T(38, 395, 'RAISED FOR FOLK & FAIRWAYS', { size: 5, w: 800, ls: 0.6, fill: C.ink60 }) +
+  T(38, 406, '$175', { size: 7.5, w: 800 }) +
+  R(150, 391, 40, 15, C.fairway, 7) + T(170, 401, 'Commit', { size: 6.5, w: 800, fill: C.white, anchor: 'middle' }));
 
 shots.leaderboard = phoneWrap(
   R(10, 14, 180, 26, C.fairway, 8) +
@@ -517,11 +516,32 @@ shots.celebrate = phoneWrap(
   T(100, 198, 'BIRDIE', { size: 16, w: 800, ls: 3, fill: C.fairway, anchor: 'middle' }) +
   R(88, 206, 24, 2.5, C.gold, 1.2) +
   T(100, 224, 'Team Clubhouse Crew · Hole 2', { size: 7, w: 700, anchor: 'middle' }) +
-  R(44, 240, 112, 26, C.gold, 8) +
-  T(100, 251, 'Great work — add $10', { size: 7, w: 800, fill: C.ink, anchor: 'middle' }) +
-  T(100, 261, 'to the pledge?', { size: 7, w: 800, fill: C.ink, anchor: 'middle' }) +
-  T(100, 318, 'Birdies celebrate — and nudge', { size: 8, fill: C.ink60, anchor: 'middle' }) +
-  T(100, 330, 'the charity pledge up.', { size: 8, fill: C.ink60, anchor: 'middle' }));
+  R(30, 238, 140, 30, C.gold, 8) +
+  T(100, 251, 'You’ve raised another $50', { size: 7, w: 800, fill: C.ink, anchor: 'middle' }) +
+  T(100, 261, 'for Folk & Fairways!', { size: 7, w: 800, fill: C.ink, anchor: 'middle' }) +
+  T(100, 318, 'Birdies celebrate — and raise', { size: 8, fill: C.ink60, anchor: 'middle' }) +
+  T(100, 330, 'money for the cause.', { size: 8, fill: C.ink60, anchor: 'middle' }));
+
+shots.donate = phoneWrap(
+  T(100, 34, 'RAISED FOR FOLK & FAIRWAYS', { size: 7, w: 800, ls: 0.6, fill: C.ink60, anchor: 'middle' }) +
+  T(100, 62, '$175', { size: 26, w: 800, anchor: 'middle' }) +
+  T(100, 88, 'COMMIT TO FOLK & FAIRWAYS', { size: 6.5, w: 800, ls: 1, fill: C.goldDeep, anchor: 'middle' }) +
+  [['Per hole', '$25'], ['Birdie', '$50'], ['Eagle', '$75'], ['Hole-in-one', '$100'], ['Double bogey', '$150']]
+    .map(([label, amt], i) => {
+      const y = 100 + i * 33;
+      return R(10, y, 180, 29, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
+        T(18, y + 13, label, { size: 8, w: 700 }) +
+        T(18, y + 23, 'tap to add', { size: 5.5, fill: C.ink60 }) +
+        R(150, y + 6, 32, 17, C.gold, 8) + T(166, y + 18, amt, { size: 7.5, w: 800, fill: C.ink, anchor: 'middle' });
+    }).join('') +
+  R(10, 268, 180, 26, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
+  T(18, 284, 'Bogey · take a sip', { size: 7.5, w: 700 }) +
+  T(182, 284, 'Free', { size: 6.5, w: 800, fill: C.ink60, anchor: 'end' }) +
+  R(10, 298, 180, 26, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
+  T(18, 314, 'Other amount', { size: 7.5, w: 700 }) +
+  T(182, 314, 'cash', { size: 6.5, fill: C.ink60, anchor: 'end' }) +
+  T(100, 352, 'Give as you go — every hole, birdie,', { size: 7, fill: C.ink60, anchor: 'middle' }) +
+  T(100, 363, 'eagle and ace adds to the total.', { size: 7, fill: C.ink60, anchor: 'middle' }));
 
 /* ---------- web screens ---------- */
 shots.webCreate = webWrap(
@@ -611,7 +631,7 @@ shots.webResults = webWrap(
     T(288, 66 + i * 34, s, { size: 9, w: 800, fill: C.live, anchor: 'end' }) +
     T(262, 66 + i * 34, 'F', { size: 7, w: 800, fill: C.goldDeep, anchor: 'middle' })).join('') +
   R(16, 156, 288, 24, 'rgba(242,191,26,0.2)', 7) +
-  T(28, 171, '$ Pledged for the cause: $740', { size: 8, w: 800, fill: C.goldDeep }) +
+  T(28, 171, '$ Raised for Folk & Fairways: $740', { size: 8, w: 800, fill: C.goldDeep }) +
   T(16, 196, 'Cards locked & timestamped — results and donations final together.', { size: 7, fill: C.ink60 }));
 
 /* ================= flow definition ================= */
@@ -644,17 +664,20 @@ const NODES = [
     cap: 'One button. Every phone moves.',
     desc: 'When the carts roll out, the organizer presses Start. Every phone on the course leaves the lobby simultaneously — scorers into score entry, everyone else onto the live leaderboard.' },
   { id: 'scoring', lane: 'play', phase: 3, medium: 'app', step: 10, title: 'The scorer keeps score',
-    cap: 'Scores, best ball — and the pledge.',
-    desc: 'Locked to the group’s shotgun sequence — no setup on the course. Glove-friendly steppers, broadcast score shapes, the counting ball always visible, and the team’s charity pledge right there to raise or lower. Team birdies celebrate — and ask "add $10 to the pledge?"' },
-  { id: 'leaderboard', lane: 'play', phase: 3, medium: 'app', step: 11, title: 'Everyone watches live',
+    cap: 'Scores, best ball — one hole at a time.',
+    desc: 'Locked to the group’s shotgun sequence — no setup on the course. Glove-friendly steppers, broadcast score shapes, and the counting ball always visible. The running “Raised for Folk & Fairways” total rides along at the bottom of the screen.' },
+  { id: 'donate', lane: 'play', phase: 3, medium: 'app', step: 11, title: 'Give as you go',
+    cap: 'Per hole · birdie · eagle · ace.',
+    desc: 'The fundraiser lives inside the round. A tap opens the commitment menu — $25 per hole, $50 a birdie, $75 an eagle, $100 an ace, $150 for a double bogey, a sip for a bogey, and “Other” for cash on the day. Every birdie celebration also offers a one-tap “raise another $50 for Folk & Fairways.” It all rolls into one live total.' },
+  { id: 'leaderboard', lane: 'play', phase: 3, medium: 'app', step: 12, title: 'Everyone watches live',
     cap: 'Updates the moment a hole is saved.',
     desc: 'Teammates and every other group see the board move in real time — rank changes flash, the leader wears gold, your team is pinned at the bottom.' },
-  { id: 'review', lane: 'play', phase: 4, medium: 'app', step: 12, title: 'Sign & submit',
+  { id: 'review', lane: 'play', phase: 4, medium: 'app', step: 13, title: 'Sign & submit',
     cap: 'The card locks. Golf tradition, kept.',
-    desc: 'The scorer reviews the full card, signs it, and submits. The round locks server-side — a second submit does nothing, corrections go through staff. The final screen shows the team’s committed pledge and what the whole field raised.' },
-  { id: 'webResults', lane: 'org', phase: 4, medium: 'web', step: 13, title: 'Results are official',
+    desc: 'The scorer reviews the full card, signs it, and submits. The round locks server-side — a second submit does nothing, corrections go through staff. The final screen shows what the team raised and what the whole field raised for Folk & Fairways.' },
+  { id: 'webResults', lane: 'org', phase: 4, medium: 'web', step: 14, title: 'Results are official',
     cap: 'Standings + donations, final together.',
-    desc: 'As the last cards come in, the standings are already final — signed, locked and timestamped — and every group’s pledge rolls up into one number for the cause. Trophy and check total announced from the same screen.' },
+    desc: 'As the last cards come in, the standings are already final — signed, locked and timestamped — and every group’s donations roll up into one number for Folk & Fairways. Trophy and check total announced from the same screen.' },
 ];
 const PHASES = [
   { name: 'Set up', when: 'Weeks before' },
@@ -674,7 +697,8 @@ const WIRES = [
   ['roster', 'lobby', 'flow'],
   ['webLive', 'scoring', 'sync', 'Every phone advances by itself'],
   ['lobby', 'scoring', 'flow'],
-  ['scoring', 'leaderboard', 'sync', 'Each saved hole streams to every board'],
+  ['scoring', 'donate', 'flow'],
+  ['donate', 'leaderboard', 'sync', 'Each saved hole streams to every board'],
   ['scoring', 'review', 'flow'],
   ['review', 'webResults', 'sync', 'Signed cards lock the standings'],
 ];
@@ -894,12 +918,12 @@ function openLightbox(n, tourMode = false) {
     : shots[n.id] +
       (n.id === 'scoring' ? `<p style="font-size:12.5px;color:var(--ink-2);margin:8px 2px 0">Bonus: team birdies trigger a full-screen celebration.</p>` + shots.celebrate : '');
   document.getElementById('lbMedium').textContent =
-    (r ? 'Actual product screenshot' : n.medium === 'app' ? 'Player app · iOS & Android' : 'Web · planned screen') + ' — step ' + n.step + ' of 13';
+    (r ? 'Actual product screenshot' : n.medium === 'app' ? 'Player app · iOS & Android' : 'Web · planned screen') + ' — step ' + n.step + ' of ' + NODES.length;
   document.getElementById('lbTitle').textContent = n.title;
   document.getElementById('lbDesc').textContent = n.desc;
   lb.classList.toggle('tour', tourMode);
   if (tourMode) {
-    document.getElementById('lbTourStep').textContent = 'Step ' + n.step + ' of 13';
+    document.getElementById('lbTourStep').textContent = 'Step ' + n.step + ' of ' + NODES.length;
     document.getElementById('lbTourPrev').disabled = ti <= 0;
     document.getElementById('lbTourNext').textContent =
       ti >= tour.length - 1 ? 'Finish ✓' : 'Next →';

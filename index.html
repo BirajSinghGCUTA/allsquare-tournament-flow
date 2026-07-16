@@ -504,7 +504,6 @@ shots.review = phoneWrap(
   T(100, 410, 'Corrections go through staff.', { size: 7.5, fill: C.ink60, anchor: 'middle' }));
 
 shots.celebrate = phoneWrap(
-  R(0, 0, 200, 420, 'rgba(18,24,18,0.22)', 0) +
   `<g stroke-linecap="round">` +
   Array.from({ length: 12 }, (_, i) => {
     const a = i * Math.PI / 6, r1 = 66, r2 = 84;
@@ -526,13 +525,19 @@ shots.donate = phoneWrap(
   T(100, 34, 'RAISED FOR FOLK & FAIRWAYS', { size: 7, w: 800, ls: 0.6, fill: C.ink60, anchor: 'middle' }) +
   T(100, 62, '$175', { size: 26, w: 800, anchor: 'middle' }) +
   T(100, 88, 'COMMIT TO FOLK & FAIRWAYS', { size: 6.5, w: 800, ls: 1, fill: C.goldDeep, anchor: 'middle' }) +
-  [['Per hole', '$25'], ['Birdie', '$50'], ['Eagle', '$75'], ['Hole-in-one', '$100'], ['Double bogey', '$150']]
-    .map(([label, amt], i) => {
+  // [label, $amount, timesAlreadyAdded] — 3×$25 + 2×$50 = the $175 above.
+  [['Per hole', '$25', 3], ['Birdie', '$50', 2], ['Eagle', '$75', 0], ['Hole-in-one', '$100', 0], ['Double bogey', '$150', 0]]
+    .map(([label, amt, n], i) => {
       const y = 100 + i * 33;
-      return R(10, y, 180, 29, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
+      const on = n > 0;
+      return R(10, y, 180, 29, on ? 'rgba(30,156,87,0.10)' : C.sand0, 9,
+          `stroke="${on ? C.live : C.line}" stroke-width="1"`) +
         T(18, y + 13, label, { size: 8, w: 700 }) +
-        T(18, y + 23, 'tap to add', { size: 5.5, fill: C.ink60 }) +
-        R(150, y + 6, 32, 17, C.gold, 8) + T(166, y + 18, amt, { size: 7.5, w: 800, fill: C.ink, anchor: 'middle' });
+        (on
+          ? T(18, y + 23, `✓ Added ×${n}`, { size: 5.5, w: 800, fill: C.live })
+          : T(18, y + 23, 'tap to add', { size: 5.5, fill: C.ink60 })) +
+        R(150, y + 6, 32, 17, on ? C.live : C.gold, 8) +
+        T(166, y + 18, amt, { size: 7.5, w: 800, fill: on ? C.white : C.ink, anchor: 'middle' });
     }).join('') +
   R(10, 268, 180, 26, C.sand0, 9, `stroke="${C.line}" stroke-width="1"`) +
   T(18, 284, 'Bogey · take a sip', { size: 7.5, w: 700 }) +
